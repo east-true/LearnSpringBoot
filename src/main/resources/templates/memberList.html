@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head">
+</head>
+<body class="is-preload">
+<div th:replace="layout/layout :: header"></div>
+<div id="main">
+    <section class="two">
+        <h1>회원 목록</h1>
+        <br>
+        <div id="container">
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th>회원번호</th>
+                        <th>아이디</th>
+                        <th>이름</th>
+                        <th>타입</th>
+                        <th>생성일</th>
+                    </tr>
+                </thead>
+                <tbody>
+<!--                th:each내부의 th:text로 값을 불러올 경우 에러가 날때가 있는데 실제 실행하면 잘 동작하는 경우가 있으니 확인해볼것-->
+                    <tr th:each="memberList : ${memberList}">
+                        <th th:text="${memberList.mno}"></th>
+                        <th th:text="${memberList.id}"></th>
+                        <th th:text="${memberList.name}"></th>
+                        <th th:text="${memberList.type}"></th>
+                        <th th:text="${#dates.format(memberList.regDate, 'yyyy-MM-dd HH:mm:ss')}"></th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+<div th:replace="layout/layout :: footer"></div>
+</body>
+</html>

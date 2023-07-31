@@ -1,0 +1,128 @@
+<!DOCTYPE HTML>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head">
+</head>
+<body class="is-preload">
+<!--th:replace로 "상대경로 :: th:fragment로 지정한 id"-->
+<div th:replace="layout/layout :: header"></div>
+<div id="main">
+    <section class="two">
+        <h1>게시판</h1>
+        <br>
+        <div id="container">
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th>글번호</th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>작성일</th>
+                        <th>조회수</th>
+                        <th>추천수</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="boardList : ${boardList}">
+                        <th><span th:text="${boardList.bno}"></span></th>
+                        <th><a th:href="@{'/select/' + ${boardList.bno}}"><span th:text="${boardList.title}"></span></a></th>
+                        <th><span th:text="${boardList.writer}"></span></th>
+                        <th><span th:text="${#dates.format(boardList.regDate, 'yyyy-MM-dd HH:mm:ss')}"></span></th>
+                        <th><span th:text="${boardList.count}"></span></th>
+                        <th><span th:text="${boardList.reco}"></span></th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- paging button-->
+        <div aria-label="Page navigation example" style="display: inline-block">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" th:href="@{/?page=1}" aria-label="Previous">
+                        <span aria-hidden="true">처음</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" th:href="@{/?page={page} (page = ${pagination.prevBlock})}" aria-label="Previous">
+                        <span aria-hidden="true">이전</span>
+                    </a>
+                </li>
+                <th:block  th:with="start = ${pagination.startPage}, end = ${pagination.endPage}">
+                    <li class="page-item"
+                        th:with="start = ${pagination.startPage}, end = ${pagination.endPage}"
+                        th:each="pageButton : ${#numbers.sequence(start, end)}">
+                        <a class="page-link" th:href="@{/?page={page} (page = ${pageButton})}" th:text=${pageButton}></a>
+                    </li>
+                </th:block>
+                <li class="page-item">
+                    <a class="page-link" th:href="@{?page={page} (page = ${pagination.nextBlock})}" aria-label="Next">
+                        <span aria-hidden="true">다음</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" th:href="@{?page={page} (page = ${pagination.totalPageCnt})}" aria-label="Previous">
+                        <span aria-hidden="true">끝</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </section>
+</div>
+<div th:replace="layout/layout :: footer"></div>
+<!-- Modal -->
+<div class="modal fade" id="loginBtn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">로그인</h5>
+            </div>
+            <div class="modal-body">
+                아이디 <input type="text" id="loginId" placeholder="아이디를 입력해 주세요" class="form-control"><br>
+				비밀번호 <input type="password" id="loginPW" placeholder="비밀번호를 입력해 주세요" class="form-control"><br>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="login">로그인</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">취소</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="joinBtn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">회원가입</h5>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    아이디 <input type="text" id="joinId" placeholder="아이디를 입력해 주세요" class="form-control"><br>
+                    비밀번호 <input type="password" id="joinPW" placeholder="비밀번호를 입력해 주세요" class="form-control"><br>
+                    이름 <input type="text" id="name" class="form-control" placeholder="이름을 입력해 주세요"><br>
+                    <div class="row">
+                        <div class="col-9">
+                            <input type="text" id="email" class="form-control" placeholder="이메일을 입력해 주세요.">
+                        </div>
+                        <div class="col-3">
+                            <button class="btn btn-primary" id="sendEmail">전송</button>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-9">
+                            <input type="text" placeholder="인증번호를 입력해 주세요." id="confirmCode" class="form-control">
+                        </div>
+                        <div class="col-3">
+                            <button class="btn btn-primary" id="confirm">인증</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="join" disabled>회원가입</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">취소</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
